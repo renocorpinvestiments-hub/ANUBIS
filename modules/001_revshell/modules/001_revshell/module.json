@@ -1,0 +1,55 @@
+{
+    "id": "001",
+    "name": "Reverse Shell Generator",
+    "version": "2.1.0",
+    "author": "sec_anonymous",
+    "category": "exploitation",
+    "tags": [
+        "reverse-shell",
+        "tcp",
+        "encrypted",
+        "payload-generation",
+        "c2"
+    ],
+    "description": "Generates encrypted reverse shell payloads for multiple target platforms and languages. Supports TCP, HTTP, DNS, ICMP, and WebSocket protocols with configurable obfuscation and AES-256 encryption.",
+    "compatibility": {
+        "windows": "full",
+        "linux": "full",
+        "macos": "partial",
+        "notes": {
+            "macos": "Requires SIP to be disabled on Apple Silicon (M3+) for raw socket binding. Non-privileged port binding (>1024) works without SIP disable."
+        }
+    },
+    "dependencies": [
+        "cryptography>=41.0.0"
+    ],
+    "entry_point": "main.py",
+    "control_interface": "control.json",
+    "requires_admin": false,
+    "delivery_support": true,
+    "supported_outputs": [
+        "exe",
+        "ps1",
+        "elf",
+        "py",
+        "sh",
+        "c",
+        "go",
+        "nim",
+        "rust"
+    ],
+    "sending_methods": [
+        "email",
+        "smb",
+        "http",
+        "https",
+        "usb",
+        "webhook"
+    ],
+    "online_rank": null,
+    "local_rank": null,
+    "min_anubis_version": "3.0.0",
+    "license": "MIT",
+    "repository": "",
+    "homepage": ""
+}
