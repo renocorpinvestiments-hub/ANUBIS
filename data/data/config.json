@@ -1,0 +1,385 @@
+{
+    "_meta": {
+        "schema_version": "2.0.0",
+        "generator": "ANUBIS",
+        "generator_version": "1.0.0",
+        "description": "Master configuration for PROJECT ANUBIS cyber operations framework",
+        "last_modified": "2026-07-26T10:00:00Z",
+        "checksum_sha256": ""
+    },
+    "engine": {
+        "name": "ANUBIS",
+        "version": "1.0.0",
+        "environment": "production",
+        "single_instance": true,
+        "lock_file": ".anubis.lock",
+        "log_level": "INFO",
+        "log_max_mb": 50,
+        "log_backup_count": 3,
+        "temp_dir_auto_clean": true,
+        "temp_max_age_hours": 24,
+        "shutdown_timeout_seconds": 10,
+        "startup_modules_parallel": true,
+        "startup_max_workers": 4,
+        "heartbeat_interval_seconds": 60,
+        "heartbeat_jitter_max_seconds": 15,
+        "throttle": {
+            "enabled": true,
+            "max_cpu_percent": 80.0,
+            "max_memory_percent": 85.0,
+            "cooldown_seconds": 2.0,
+            "action": "delay"
+        }
+    },
+    "kernel": {
+        "os_detection_method": "platform",
+        "permissions_check": true,
+        "admin_escalation": "auto",
+        "allow_ptrace": false,
+        "sandbox_detection": true,
+        "detected_os": "auto",
+        "fallback_os": "linux",
+        "compat_overrides": {}
+    },
+    "paths": {
+        "base": ".",
+        "modules": "modules",
+        "data": "data",
+        "logs": "logs",
+        "temp": "temp",
+        "output": "output",
+        "cache": "cache",
+        "database": "data/anubis.db",
+        "config": "data/config.json",
+        "schema": "data/schema.sql"
+    },
+    "database": {
+        "enabled": true,
+        "engine": "sqlite",
+        "path": "data/anubis.db",
+        "journal_mode": "WAL",
+        "cache_size_kb": -65536,
+        "synchronous": "NORMAL",
+        "foreign_keys": true,
+        "busy_timeout_ms": 5000,
+        "auto_vacuum": "INCREMENTAL",
+        "temp_store": "MEMORY",
+        "mmap_size_bytes": 268435456,
+        "connection_pool_min": 2,
+        "connection_pool_max": 8,
+        "connection_timeout_seconds": 10,
+        "retry_on_locked": true,
+        "max_retries": 3,
+        "retry_delay_ms": 100,
+        "schema_auto_migrate": true,
+        "schema_version_table": "_schema_version",
+        "backup": {
+            "enabled": true,
+            "interval_hours": 24,
+            "max_backups": 7,
+            "directory": "backups",
+            "compress": true
+        },
+        "obfuscate_table_names": true,
+        "table_prefix": "a_",
+        "salt": ""
+    },
+    "delivery": {
+        "build_dir": "build",
+        "output_dir": "output",
+        "dist_dir": "dist",
+        "keep_build_artifacts": false,
+        "auto_clean_build": true,
+        "pyinstaller": {
+            "use_upx": true,
+            "upx_dir": "",
+            "onefile": true,
+            "noconsole": true,
+            "strip": true,
+            "noupx_exclusions": "",
+            "additional_args": "--hidden-import pkgutil --hidden-import importlib.metadata --collect-all cryptography",
+            "icon_path": "",
+            "version_file": ""
+        },
+        "packing": {
+            "compression_level": 9,
+            "encrypt_archive": true,
+            "archive_format": "zip",
+            "split_size_mb": 0,
+            "password": ""
+        },
+        "delivery_methods": {
+            "http": {
+                "enabled": true,
+                "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "timeout_seconds": 30,
+                "max_redirects": 5,
+                "verify_ssl": false,
+                "proxy": "",
+                "headers": {}
+            },
+            "smtp": {
+                "enabled": false,
+                "server": "",
+                "port": 587,
+                "use_tls": true,
+                "username": "",
+                "password": "",
+                "from_addr": "",
+                "to_addrs": [],
+                "subject": "",
+                "attachment_name": ""
+            },
+            "scp": {
+                "enabled": false,
+                "host": "",
+                "port": 22,
+                "username": "",
+                "password": "",
+                "key_file": "",
+                "remote_path": "/tmp/"
+            },
+            "smb": {
+                "enabled": false,
+                "share": "",
+                "domain": "",
+                "username": "",
+                "password": ""
+            },
+            "dns_exfil": {
+                "enabled": false,
+                "domain": "",
+                "dns_server": "",
+                "chunk_size_bytes": 48,
+                "delay_ms": 100,
+                "templated_query": ""
+            }
+        },
+        "sha256_cache": {
+            "enabled": true,
+            "max_entries": 1000,
+            "db_table": "delivery_cache"
+        }
+    },
+    "modules": {
+        "auto_scan": true,
+        "scan_on_startup": true,
+        "allow_user_install": true,
+        "user_module_dir": "",
+        "validate_signatures": false,
+        "signature_pubkey": "",
+        "max_load_time_seconds": 30,
+        "max_memory_per_module_mb": 256,
+        "sandbox_modules": false,
+        "blacklist": [],
+        "whitelist": [],
+        "tip_version": "2.0",
+        "tip_strict_validation": true
+    },
+    "telemetry": {
+        "enabled": true,
+        "ring_buffer_size": 10000,
+        "log_to_file": true,
+        "log_file": "logs/telemetry.log",
+        "log_level": "INFO",
+        "log_format": "json",
+        "log_rotation": "size",
+        "log_max_bytes": 52428800,
+        "log_backup_count": 5,
+        "enable_metrics": true,
+        "metrics_interval_seconds": 300,
+        "enable_tracing": false,
+        "trace_sample_rate": 0.1,
+        "crash_reporter": true,
+        "crash_dump_dir": "logs/crashes",
+        "remote": {
+            "enabled": false,
+            "endpoint": "",
+            "api_key": "",
+            "batch_size": 100,
+            "flush_interval_seconds": 60,
+            "compress": true,
+            "retry_attempts": 3,
+            "timeout_seconds": 10
+        },
+        "sanitize_paths": true,
+        "sanitize_ips": false,
+        "sanitize_hostnames": false
+    },
+    "ranking": {
+        "enabled": true,
+        "online_weight": 0.4,
+        "local_weight": 0.6,
+        "online": {
+            "api_endpoint": "",
+            "api_key": "",
+            "timeout_seconds": 10,
+            "cache_ttl_hours": 24,
+            "max_results": 100,
+            "fallback_on_error": true
+        },
+        "local": {
+            "db_table": "module_rankings",
+            "min_samples": 3,
+            "decay_hours": 168,
+            "cache_size": 500
+        },
+        "scoring": {
+            "uptime_weight": 0.20,
+            "success_rate_weight": 0.25,
+            "avg_latency_weight": 0.10,
+            "memory_efficiency_weight": 0.10,
+            "stealth_weight": 0.15,
+            "versatility_weight": 0.10,
+            "community_rating_weight": 0.10,
+            "scoring_version": "2.0"
+        }
+    },
+    "ui": {
+        "theme": "dark",
+        "theme_file": "ui/dark_theme.qss",
+        "window_title": "ANUBIS v1.0.0",
+        "window_geometry": "1200x800",
+        "window_minimum": "900x600",
+        "window_start_maximized": false,
+        "window_accept_drops": false,
+        "font_family": "Consolas",
+        "font_size": 10,
+        "accent_color": "#C8A055",
+        "accent_color_dark": "#A07D3A",
+        "bg_color": "#0D1117",
+        "bg_color_lighter": "#161B22",
+        "bg_color_card": "#1C2333",
+        "text_color": "#E6EDF3",
+        "text_color_muted": "#8B949E",
+        "border_color": "#30363D",
+        "success_color": "#3FB950",
+        "warning_color": "#D29922",
+        "error_color": "#F85149",
+        "info_color": "#58A6FF",
+        "animations_enabled": true,
+        "animation_speed_ms": 200,
+        "toolbar_style": "icon_and_text",
+        "show_status_bar": true,
+        "confirm_on_exit": true,
+        "minimize_to_tray": false,
+        "language": "en",
+        "wizard": {
+            "show_on_startup": true,
+            "skippable": true,
+            "steps": 5
+        },
+        "console": {
+            "max_lines": 10000,
+            "auto_scroll": true,
+            "line_wrap": false,
+            "font_size": 11,
+            "show_timestamps": true,
+            "timestamp_format": "HH:mm:ss.fff",
+            "filter_levels": ["DEBUG", "INFO", "WARNING", "ERROR"],
+            "search_enabled": true,
+            "export_enabled": true
+        }
+    },
+    "security": {
+        "max_retries_auth": 3,
+        "lockout_seconds": 300,
+        "session_timeout_minutes": 60,
+        "min_tls_version": "1.2",
+        "allowed_ciphers": [
+            "TLS_AES_256_GCM_SHA384",
+            "TLS_CHACHA20_POLY1305_SHA256"
+        ],
+        "encrypt_local_db": false,
+        "db_encryption_key": "",
+        "secure_memory_wipe": true,
+        "obfuscate_process_name": true,
+        "process_name_override": "svchost.exe",
+        "obfuscate_window_class": true,
+        "window_class_override": "WindowsForms10.Window.8.app.0.141b42a",
+        "anti_debug": {
+            "enabled": false,
+            "check_parent": true,
+            "check_remote_debugger": true,
+            "check_kernel_debugger": true,
+            "check_vm": false,
+            "check_sandbox": true,
+            "action": "warn"
+        },
+        "self_destruct": {
+            "enabled": false,
+            "trigger_on_exit": false,
+            "trigger_on_detection": false,
+            "overwrite_passes": 3,
+            "delete_artifacts": true,
+            "wipe_logs": true
+        }
+    },
+    "network": {
+        "default_interface": "",
+        "default_timeout_seconds": 15,
+        "dns_servers": [],
+        "proxy": {
+            "enabled": false,
+            "http": "",
+            "https": "",
+            "no_proxy": []
+        },
+        "tor": {
+            "enabled": false,
+            "socks_host": "127.0.0.1",
+            "socks_port": 9050,
+            "control_host": "127.0.0.1",
+            "control_port": 9051,
+            "control_password": "",
+            "new_circuit_per_request": false
+        },
+        "user_agents": [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (X11; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0"
+        ],
+        "rate_limit": {
+            "enabled": true,
+            "requests_per_second": 10,
+            "burst": 20,
+            "delay_between_requests_ms": 100
+        }
+    },
+    "notifications": {
+        "enabled": true,
+        "desktop": true,
+        "sound": false,
+        "sound_file": "",
+        "module_complete": true,
+        "module_error": true,
+        "build_complete": true,
+        "delivery_success": true,
+        "delivery_failure": true,
+        "system_alert": true
+    },
+    "updates": {
+        "check_on_startup": false,
+        "channel": "stable",
+        "update_url": "",
+        "auto_install": false,
+        "verify_signatures": true,
+        "signature_pubkey": "",
+        "rollback_enabled": true,
+        "max_rollback_versions": 3
+    },
+    "debug": {
+        "enabled": false,
+        "verbose_logging": false,
+        "dump_traffic": false,
+        "dump_payloads": false,
+        "profile_performance": false,
+        "dev_mode": false,
+        "mock_os": "",
+        "mock_network": false,
+        "extra_assertions": false,
+        "break_on_error": false
+    }
+    }
