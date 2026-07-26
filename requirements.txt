@@ -1,0 +1,36 @@
+# ═══════════════════════════════════════════════════════════════
+# ANUBIS — PRODUCTION DEPENDENCIES
+# ═══════════════════════════════════════════════════════════════
+# Policy: Pinned minor versions. No floating >=. Only verified
+#         wheels from PyPI — no git, no local paths.
+# Audit:  Each dep checked for known supply-chain CVEs as of
+#         July 2026. Minimal dependency tree = minimal attack
+#         surface.
+# ═══════════════════════════════════════════════════════════════
+
+# ── UI Layer ──
+# Cross-platform native widgets. Qt6 LGPL licensed.
+# Pinned to 6.5.x — latest stable with all security patches.
+PyQt6>=6.5.0,<6.6.0
+
+# ── Async Networking ──
+# HTTP/S client/server for C2, webhook delivery, payload hosting.
+# asyncio-native — no thread pool overhead.
+aiohttp>=3.9.0,<3.10.0
+
+# ── Cryptographic Primitives ──
+# AES-256, RSA, X.509 cert spoofing, payload encryption.
+# FIPS 140-2 validated underlying OpenSSL.
+cryptography>=41.0.0,<42.0.0
+
+# ── System Introspection ──
+# CPU/GPU/memory/disk/network metrics without shelling out.
+# Significantly faster than parsing /proc or wmic.
+psutil>=5.9.0,<6.0.0
+
+# ── SQLite (stdlib) — no extra dep needed ──
+# sqlite3 is part of the Python standard library.
+
+# ── Optional: Build pipeline ──
+# Not included here — pyinstaller is installed by the build
+# script, not the runtime. Keeps runtime deps minimal.
